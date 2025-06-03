@@ -225,7 +225,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 - 🐛 **Bug Reports:** Create an [Issue](https://github.com/yourusername/isOlderThanSixMonths/issues)
 - 💡 **Feature Requests:** Create an [Issue](https://github.com/yourusername/isOlderThanSixMonths/issues)
-- 📧 **Contact:** [your.email@example.com](mailto:your.email@example.com)
+- 📧 **Contact:** [airdrop_zufluesse2a@icloud.com](mailto:airdrop_zufluesse2a@icloud.com)
 
 ## 📊 Changelog
 

@@ -1,0 +1,201 @@
+.TH ISOLDERTHANSIXMONTHS 1 "2025-06-03" "Version 1.0" "User Commands"
+.SH NAME
+isOlderThanSixMonths \- checks if a file is older than 6 months
+
+.SH SYNOPSIS
+.B isOlderThanSixMonths
+.I file_path
+.br
+.B isOlderThanSixMonths
+.B \-h|\-\-help
+
+.SH DESCRIPTION
+.B isOlderThanSixMonths
+checks if a file's modification date is older than 6 months. The calculation follows the same logic as Excel's DATEDIF function with the "m" parameter for months.
+
+The script uses the file's modification date (mtime) and compares it with the current date. The month calculation takes into account different month lengths and follows the logic:
+
+.nf
+Months = (Today_Year - File_Year) × 12 + (Today_Month - File_Month)
+
+If Today_Day < File_Day:
+    Months = Months - 1
+.fi
+
+.SH OPTIONS
+.TP
+.I file_path
+The full path to the file to be checked.
+
+.TP
+.B \-h, \-\-help
+Show help and exit.
+
+.SH EXIT STATUS
+The program exits with the following exit codes:
+
+.TP
+.B 0
+The file is older than 6 months.
+
+.TP
+.B 1
+The file is younger than 6 months.
+
+.TP  
+.B 255 (-1)
+The specified file was not found.
+
+.TP
+.B 254 (-2)
+Another error occurred (e.g., wrong parameters, missing system commands).
+
+.SH EXAMPLES
+Check a file in the current directory:
+.nf
+.B isOlderThanSixMonths ./document.txt
+.fi
+
+Check a file with absolute path:
+.nf  
+.B isOlderThanSixMonths /var/log/system.log
+.fi
+
+Usage in a shell script:
+.nf
+.B if isOlderThanSixMonths "/path/to/file.txt"; then
+.B     echo "File is older than 6 months"
+.B     # Further actions...
+.B else
+.B     echo "File is still current"
+.B fi
+.fi
+
+Usage with find to delete old backup files:
+.nf
+.B find /backup -name "*.bak" -type f -exec sh -c '
+.B     if isOlderThanSixMonths "$1"; then
+.B         echo "Deleting old file: $1"
+.B         rm "$1"
+.B     fi
+.B ' _ {} \\;
+.fi
+
+Checking exit codes:
+.nf
+.B isOlderThanSixMonths /path/to/file.txt
+.B case $? in
+.B     0)   echo "File is older than 6 months" ;;
+.B     1)   echo "File is younger than 6 months" ;;
+.B     255) echo "File not found" ;;
+.B     254) echo "Error during execution" ;;
+.B esac
+.fi
+
+.SH ENVIRONMENT
+The script uses the following environment variables if available:
+
+.TP
+.B PATH
+To locate the system commands
+.I stat
+and
+.I date.
+
+.SH FILES
+The script requires no configuration files.
+
+.SH DIAGNOSTICS
+Error messages are output to stderr:
+
+.TP
+.B "Error: File 'PATH' not found"
+The specified file does not exist or is not accessible.
+
+.TP
+.B "Error: Exactly one parameter required"
+An incorrect number of parameters was passed.
+
+.TP
+.B "Error: stat command not available"
+The system command
+.I stat
+is not installed or not in PATH.
+
+.TP
+.B "Error: date command not available"
+The system command
+.I date
+is not installed or not in PATH.
+
+.TP
+.B "Error: Unknown stat variant"
+.TP
+.B "Error: Unknown date variant"
+The system uses an unsupported variant of the
+.I stat
+or
+.I date
+commands.
+
+.SH COMPATIBILITY
+The script is POSIX-compatible and works on the following systems:
+
+.TP
+.B Unix Systems
+Linux (all distributions), macOS, FreeBSD, OpenBSD, NetBSD, AIX, Solaris
+
+.TP
+.B Shells
+sh (POSIX), bash, zsh, ksh, dash, ash
+
+.TP
+.B Special Features
+The script automatically detects the available variants of the
+.I stat
+and
+.I date
+commands and adapts accordingly:
+.RS
+.IP \(bu 2
+GNU stat/date (Linux)
+.IP \(bu 2  
+BSD stat/date (macOS, *BSD)
+.RE
+
+.SH NOTES
+.TP
+.B Modification Date
+The script uses the file's modification date (mtime), not the creation or access date.
+
+.TP
+.B Symbolic Links
+Symbolic links are not automatically followed. The modification date of the link itself is used.
+
+.TP  
+.B Time Zone
+All calculations are performed in the system's local time zone.
+
+.TP
+.B Accuracy
+The month calculation is accurate to the day level. Times are not considered.
+
+.SH BUGS
+During system time changes (e.g., through NTP synchronization), temporarily inaccurate results may occur.
+
+Report bugs at: https://github.com/yourusername/isOlderThanSixMonths/issues
+
+.SH AUTHOR
+Auto-generated.
+
+.SH SEE ALSO
+.BR stat (1),
+.BR date (1),
+.BR find (1),
+.BR test (1),
+.BR sh (1)
+
+.SH COPYRIGHT
+MIT License. See the LICENSE file for details.
+
+.\" End of man page

@@ -25,6 +25,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <errno.h>
+#include <limits.h>     // Für INT_MAX, INT_MIN etc.
 
 #ifdef _WIN32
     #include <windows.h>
@@ -98,48 +99,94 @@ int parse_arguments(int argc, char *argv[], arguments_t *args) {
                 fprintf(stderr, "Error: -days requires a value\n");
                 return ERROR_INVALID_ARGS;
             }
-            args->days = atoi(argv[++i]);
-            args->has_days = 1;
-            if (args->days <= 0) {
-                fprintf(stderr, "Error: Days must be positive\n");
+            
+            // VERBESSERT: Verwende strtol() statt atoi() für bessere Validierung
+            char *endptr;
+            long val = strtol(argv[++i], &endptr, 10);
+            
+            // Prüfe ob kompletter String eine Zahl war
+            if (*endptr != '\0') {
+                fprintf(stderr, "Error: -days value must be a number\n");
                 return ERROR_INVALID_VALUE;
             }
+            
+            // Prüfe Bereich
+            if (val <= 0 || val > INT_MAX) {
+                fprintf(stderr, "Error: -days value out of range (1-%d)\n", INT_MAX);
+                return ERROR_INVALID_VALUE;
+            }
+            
+            args->days = (int)val;
+            args->has_days = 1;
         }
         else if (strcmp(argv[i], "-weeks") == 0) {
             if (i + 1 >= argc) {
                 fprintf(stderr, "Error: -weeks requires a value\n");
                 return ERROR_INVALID_ARGS;
             }
-            args->weeks = atoi(argv[++i]);
-            args->has_weeks = 1;
-            if (args->weeks <= 0) {
-                fprintf(stderr, "Error: Weeks must be positive\n");
+            
+            // VERBESSERT: Gleiche Validierung für weeks
+            char *endptr;
+            long val = strtol(argv[++i], &endptr, 10);
+            
+            if (*endptr != '\0') {
+                fprintf(stderr, "Error: -weeks value must be a number\n");
                 return ERROR_INVALID_VALUE;
             }
+            
+            if (val <= 0 || val > INT_MAX) {
+                fprintf(stderr, "Error: -weeks value out of range\n");
+                return ERROR_INVALID_VALUE;
+            }
+            
+            args->weeks = (int)val;
+            args->has_weeks = 1;
         }
         else if (strcmp(argv[i], "-months") == 0) {
             if (i + 1 >= argc) {
                 fprintf(stderr, "Error: -months requires a value\n");
                 return ERROR_INVALID_ARGS;
             }
-            args->months = atoi(argv[++i]);
-            args->has_months = 1;
-            if (args->months <= 0) {
-                fprintf(stderr, "Error: Months must be positive\n");
+            
+            // VERBESSERT: Gleiche Validierung für months
+            char *endptr;
+            long val = strtol(argv[++i], &endptr, 10);
+            
+            if (*endptr != '\0') {
+                fprintf(stderr, "Error: -months value must be a number\n");
                 return ERROR_INVALID_VALUE;
             }
+            
+            if (val <= 0 || val > INT_MAX) {
+                fprintf(stderr, "Error: -months value out of range\n");
+                return ERROR_INVALID_VALUE;
+            }
+            
+            args->months = (int)val;
+            args->has_months = 1;
         }
         else if (strcmp(argv[i], "-years") == 0) {
             if (i + 1 >= argc) {
                 fprintf(stderr, "Error: -years requires a value\n");
                 return ERROR_INVALID_ARGS;
             }
-            args->years = atoi(argv[++i]);
-            args->has_years = 1;
-            if (args->years <= 0) {
-                fprintf(stderr, "Error: Years must be positive\n");
+            
+            // VERBESSERT: Gleiche Validierung für years
+            char *endptr;
+            long val = strtol(argv[++i], &endptr, 10);
+            
+            if (*endptr != '\0') {
+                fprintf(stderr, "Error: -years value must be a number\n");
                 return ERROR_INVALID_VALUE;
             }
+            
+            if (val <= 0 || val > 1000) { // VERBESSERT: Praktisches Limit für Jahre
+                fprintf(stderr, "Error: -years value out of range (1-1000)\n");
+                return ERROR_INVALID_VALUE;
+            }
+            
+            args->years = (int)val;
+            args->has_years = 1;
         }
         else if (strcmp(argv[i], "-exact") == 0) {
             args->exact_mode = 1;
@@ -176,6 +223,22 @@ int validate_arguments(const arguments_t *args) {
         fprintf(stderr, "Error: When combined with -years, -months can have maximum value of %d\n",
                 MAX_MONTHS_WITH_YEARS);
         return ERROR_INVALID_COMBINATION;
+    }
+    
+    // VERBESSERT: Zusätzliche Vernünftigkeitsprüfungen
+    if (args->has_days && args->days > 365000) { // ~1000 Jahre in Tagen
+        fprintf(stderr, "Error: -days value too large (max ~365000)\n");
+        return ERROR_INVALID_VALUE;
+    }
+    
+    if (args->has_weeks && args->weeks > 52000) { // ~1000 Jahre in Wochen
+        fprintf(stderr, "Error: -weeks value too large (max ~52000)\n");
+        return ERROR_INVALID_VALUE;
+    }
+    
+    if (args->has_months && args->months > 12000) { // ~1000 Jahre in Monaten
+        fprintf(stderr, "Error: -months value too large (max ~12000)\n");
+        return ERROR_INVALID_VALUE;
     }
     
     return SUCCESS;
@@ -242,8 +305,10 @@ int get_days_in_month(int month, int year) {
  * @return New time_t value
  */
 time_t add_months_to_time(time_t base_time, int months) {
+    if (months == 0) return base_time;
+    
     struct tm *tm_struct = localtime(&base_time);
-    if (!tm_struct) return base_time;
+    if (!tm_struct) return -1;
     
     /* Copy to avoid modifying original */
     struct tm new_tm = *tm_struct;
@@ -255,21 +320,28 @@ time_t add_months_to_time(time_t base_time, int months) {
     while (new_tm.tm_mon >= 12) {
         new_tm.tm_year++;
         new_tm.tm_mon -= 12;
+        
+        if (new_tm.tm_year > 1100) return -1; // Jahr > 3000
     }
     
     /* Normalize negative months */
     while (new_tm.tm_mon < 0) {
         new_tm.tm_year--;
         new_tm.tm_mon += 12;
+        
+        if (new_tm.tm_year < -1900) return -1; // Jahr < 0
     }
     
     /* Handle day overflow for shorter months */
     int days_in_new_month = get_days_in_month(new_tm.tm_mon + 1, new_tm.tm_year + 1900);
+    if (days_in_new_month == 0) return -1; // Ungültiger Monat
+    
     if (new_tm.tm_mday > days_in_new_month) {
         new_tm.tm_mday = days_in_new_month;
     }
     
-    return mktime(&new_tm);
+    time_t result = mktime(&new_tm);
+    return result;
 }
 
 /**
@@ -281,18 +353,43 @@ time_t add_months_to_time(time_t base_time, int months) {
  * @return New time_t value
  */
 time_t add_years_to_time(time_t base_time, int years) {
+    if (years == 0) return base_time;
+    
     struct tm *tm_struct = localtime(&base_time);
-    if (!tm_struct) return base_time;
+    if (!tm_struct) return -1;
     
     struct tm new_tm = *tm_struct;
+    
+    if (abs(years) > 100) {
+        time_t result = base_time;
+        int remaining = years;
+        int step = (years > 0) ? 50 : -50;
+        
+        while (abs(remaining) > 50) {
+            result = add_years_to_time(result, step);
+            if (result == -1) return -1; // mktime Fehler
+            remaining -= step;
+        }
+        
+        if (remaining != 0) {
+            result = add_years_to_time(result, remaining);
+        }
+        return result;
+    }
+    
     new_tm.tm_year += years;
+    
+    if (new_tm.tm_year < -1900 || new_tm.tm_year > 1100) { // Jahr 0-3000
+        return -1; // Unrealistisches Datum
+    }
     
     /* Handle February 29 on non-leap years */
     if (new_tm.tm_mon == 1 && new_tm.tm_mday == 29 && !is_leap_year(new_tm.tm_year + 1900)) {
         new_tm.tm_mday = 28;
     }
     
-    return mktime(&new_tm);
+    time_t result = mktime(&new_tm);
+    return result;
 }
 
 /**
@@ -313,34 +410,49 @@ time_t calculate_reference_time(const arguments_t *args) {
     } else {
         /* Use end of previous day */
         struct tm *tm_struct = localtime(&current_time);
+        if (!tm_struct) return -1;
+        
         tm_struct->tm_hour = 23;
         tm_struct->tm_min = 59;
         tm_struct->tm_sec = 59;
         tm_struct->tm_mday -= 1;  /* Previous day */
         reference_time = mktime(tm_struct);
+        
+        if (reference_time == -1) return -1;
     }
     
     /* Calculate target time based on parameters */
     time_t target_time = reference_time;
     
     if (args->has_days) {
-        target_time -= args->days * SECONDS_PER_DAY;
+        // VERBESSERT: Prüfe auf Overflow bei sehr großen Tageswerten
+        if (args->days > (INT_MAX / SECONDS_PER_DAY)) {
+            return -1; // Overflow würde auftreten
+        }
+        target_time -= (time_t)args->days * SECONDS_PER_DAY;
     }
     else if (args->has_weeks) {
-        target_time -= args->weeks * DAYS_PER_WEEK * SECONDS_PER_DAY;
+        // VERBESSERT: Prüfe auf Overflow bei sehr großen Wochenwerten
+        if (args->weeks > (INT_MAX / (DAYS_PER_WEEK * SECONDS_PER_DAY))) {
+            return -1; // Overflow würde auftreten
+        }
+        target_time -= (time_t)args->weeks * DAYS_PER_WEEK * SECONDS_PER_DAY;
     }
     else if (args->has_months || args->has_years) {
         /* Handle months and years with proper calendar arithmetic */
         if (args->has_years) {
             target_time = add_years_to_time(target_time, -args->years);
+            if (target_time == -1) return -1; // Fehler bei Jahr-Berechnung
         }
         if (args->has_months) {
             target_time = add_months_to_time(target_time, -args->months);
+            if (target_time == -1) return -1; // Fehler bei Monat-Berechnung
         }
     }
     else {
         /* Default: 6 months */
         target_time = add_months_to_time(target_time, -DEFAULT_MONTHS);
+        if (target_time == -1) return -1; // Fehler bei Default-Berechnung
     }
     
     return target_time;
@@ -400,6 +512,12 @@ int isOlderThan_main(int argc, char *argv[]) {
     /* Calculate reference time */
     time_t reference_time = calculate_reference_time(&args);
     
+    // VERBESSERT: Bessere Fehlerbehandlung für extreme Werte
+    if (reference_time == -1) {
+        fprintf(stderr, "Error: Cannot calculate reference time (values too extreme)\n");
+        return ERROR_INVALID_VALUE;
+    }
+    
     /* Compare times */
     if (file_time < reference_time) {
         /* File is older than specified period */
@@ -410,11 +528,13 @@ int isOlderThan_main(int argc, char *argv[]) {
         struct tm *file_tm = localtime(&file_time);
         struct tm *ref_tm = localtime(&reference_time);
         
-        strftime(file_time_str, sizeof(file_time_str), "%Y-%m-%d %H:%M:%S", file_tm);
-        strftime(ref_time_str, sizeof(ref_time_str), "%Y-%m-%d %H:%M:%S", ref_tm);
-        
-        printf("File modified: %s\n", file_time_str);
-        printf("Reference time: %s\n", ref_time_str);
+        if (file_tm && ref_tm) { // VERBESSERT: Prüfe localtime() Erfolg
+            strftime(file_time_str, sizeof(file_time_str), "%Y-%m-%d %H:%M:%S", file_tm);
+            strftime(ref_time_str, sizeof(ref_time_str), "%Y-%m-%d %H:%M:%S", ref_tm);
+            
+            printf("File modified: %s\n", file_time_str);
+            printf("Reference time: %s\n", ref_time_str);
+        }
         
         return SUCCESS;
     } else {

@@ -85,8 +85,10 @@
     
     for (int i = 0; i < argc; i++) {
         NSString *arg = arguments[i];
-        argv[i] = malloc(strlen([arg UTF8String]) + 1);
-        strcpy(argv[i], [arg UTF8String]);
+        const char *utf8String = [arg UTF8String];
+        size_t len = strlen(utf8String);
+        argv[i] = malloc(len + 1);
+        strcpy(argv[i], utf8String);
     }
     
     // Capture stdout and stderr for testing
@@ -98,13 +100,8 @@
     freopen("/dev/null", "w", stderr);
     
     // Call the main function - we need to use the exposed function for testing
-    #ifdef TESTING
-    int result = isOlderThan_main(argc, argv);
-    #else
-    // If TESTING is not defined, we can't test the main function directly
-    // This would require a different approach
-    int result = -1;
-    #endif
+    int result;
+    result = isOlderThan_main(argc, argv);
     
     // Restore stdout and stderr
     dup2(stdout_backup, STDOUT_FILENO);

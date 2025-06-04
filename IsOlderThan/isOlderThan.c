@@ -366,17 +366,13 @@ const char *get_error_message(int error_code) {
 
 /**
  * Main program entry point
- * When testing, this function can be called as isOlderThan_main
+ * When testing, this function is exposed as isOlderThan_main
  *
  * @param argc Argument count
  * @param argv Argument vector
  * @return Exit code
  */
-#ifdef TESTING
 int isOlderThan_main(int argc, char *argv[]) {
-#else
-int main(int argc, char *argv[]) {
-#endif
     arguments_t args;
     int result;
     
@@ -427,10 +423,3 @@ int main(int argc, char *argv[]) {
         return ERROR_INVALID_ARGS;  /* Using as "not older" indicator */
     }
 }
-
-#ifdef TESTING
-/* Provide a main function for normal compilation */
-int main(int argc, char *argv[]) {
-    return isOlderThan_main(argc, argv);
-}
-#endif

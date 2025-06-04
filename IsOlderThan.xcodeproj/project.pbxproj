@@ -7,16 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7B5CF63E2DF0401B00600EDB /* IsOlderThan in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B5CF5FB2DEF3F9900600EDB /* IsOlderThan */; };
+		7B97E2122DF0C70100BE8C32 /* libIsOlderThanLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B97E2082DF0C5C400BE8C32 /* libIsOlderThanLib.a */; };
+		7B97E2132DF0C78700BE8C32 /* libIsOlderThanLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B97E2082DF0C5C400BE8C32 /* libIsOlderThanLib.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		7B5CF6372DF03F3100600EDB /* PBXContainerItemProxy */ = {
+		7B97E2142DF0C80E00BE8C32 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7B5CF5F32DEF3F9900600EDB /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 7B5CF5FA2DEF3F9900600EDB;
-			remoteInfo = IsOlderThan;
+			remoteGlobalIDString = 7B97E2072DF0C5C400BE8C32;
+			remoteInfo = IsOlderThanLib;
+		};
+		7B97E2162DF0C81D00BE8C32 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7B5CF5F32DEF3F9900600EDB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7B97E2072DF0C5C400BE8C32;
+			remoteInfo = IsOlderThanLib;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -38,6 +46,7 @@
 		7B5CF6302DF03DC600600EDB /* IsOlderThan-Unit Test Bundle.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "IsOlderThan-Unit Test Bundle.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B5CF63A2DF03F6800600EDB /* IsOlderThan.xcscheme */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = IsOlderThan.xcscheme; sourceTree = "<group>"; };
 		7B5CF63B2DF03F6800600EDB /* IsOlderThan-Tests.xcscheme */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "IsOlderThan-Tests.xcscheme"; sourceTree = "<group>"; };
+		7B97E2082DF0C5C400BE8C32 /* libIsOlderThanLib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libIsOlderThanLib.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -48,11 +57,33 @@
 			);
 			target = 7B5CF5FA2DEF3F9900600EDB /* IsOlderThan */;
 		};
+		7B97E20D2DF0C64900BE8C32 /* Exceptions for "IsOlderThan" folder in "IsOlderThan" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				isOlderThan.c,
+			);
+			target = 7B5CF5FA2DEF3F9900600EDB /* IsOlderThan */;
+		};
+		7B97E20E2DF0C64900BE8C32 /* Exceptions for "IsOlderThan" folder in "IsOlderThanLib" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				isOlderThan.c,
+				isOlderThan.h,
+			);
+			publicHeaders = (
+				isOlderThan.h,
+			);
+			target = 7B97E2072DF0C5C400BE8C32 /* IsOlderThanLib */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		7B5CF5FD2DEF3F9900600EDB /* IsOlderThan */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				7B97E20D2DF0C64900BE8C32 /* Exceptions for "IsOlderThan" folder in "IsOlderThan" target */,
+				7B97E20E2DF0C64900BE8C32 /* Exceptions for "IsOlderThan" folder in "IsOlderThanLib" target */,
+			);
 			path = IsOlderThan;
 			sourceTree = "<group>";
 		};
@@ -81,6 +112,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B97E2122DF0C70100BE8C32 /* libIsOlderThanLib.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,7 +120,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7B5CF63E2DF0401B00600EDB /* IsOlderThan in Frameworks */,
+				7B97E2132DF0C78700BE8C32 /* libIsOlderThanLib.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7B97E2062DF0C5C400BE8C32 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -113,6 +152,7 @@
 			children = (
 				7B5CF5FB2DEF3F9900600EDB /* IsOlderThan */,
 				7B5CF6302DF03DC600600EDB /* IsOlderThan-Unit Test Bundle.xctest */,
+				7B97E2082DF0C5C400BE8C32 /* libIsOlderThanLib.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -145,6 +185,16 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		7B97E2042DF0C5C400BE8C32 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		7B5CF5FA2DEF3F9900600EDB /* IsOlderThan */ = {
 			isa = PBXNativeTarget;
@@ -157,6 +207,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				7B97E2152DF0C80E00BE8C32 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				7B5CF5FD2DEF3F9900600EDB /* IsOlderThan */,
@@ -181,7 +232,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				7B5CF6382DF03F3100600EDB /* PBXTargetDependency */,
+				7B97E2172DF0C81D00BE8C32 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				7B5CF6312DF03DC600600EDB /* IsOlderThan-Unit Test Bundle */,
@@ -192,6 +243,25 @@
 			productName = "IsOlderThan-Unit Test Bundle";
 			productReference = 7B5CF6302DF03DC600600EDB /* IsOlderThan-Unit Test Bundle.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		7B97E2072DF0C5C400BE8C32 /* IsOlderThanLib */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7B97E2092DF0C5C400BE8C32 /* Build configuration list for PBXNativeTarget "IsOlderThanLib" */;
+			buildPhases = (
+				7B97E2042DF0C5C400BE8C32 /* Headers */,
+				7B97E2052DF0C5C400BE8C32 /* Sources */,
+				7B97E2062DF0C5C400BE8C32 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IsOlderThanLib;
+			packageProductDependencies = (
+			);
+			productName = IsOlderThanLib;
+			productReference = 7B97E2082DF0C5C400BE8C32 /* libIsOlderThanLib.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -207,6 +277,9 @@
 						CreatedOnToolsVersion = 16.4;
 					};
 					7B5CF62F2DF03DC600600EDB = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					7B97E2072DF0C5C400BE8C32 = {
 						CreatedOnToolsVersion = 16.4;
 					};
 				};
@@ -227,6 +300,7 @@
 			targets = (
 				7B5CF5FA2DEF3F9900600EDB /* IsOlderThan */,
 				7B5CF62F2DF03DC600600EDB /* IsOlderThan-Unit Test Bundle */,
+				7B97E2072DF0C5C400BE8C32 /* IsOlderThanLib */,
 			);
 		};
 /* End PBXProject section */
@@ -256,13 +330,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7B97E2052DF0C5C400BE8C32 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		7B5CF6382DF03F3100600EDB /* PBXTargetDependency */ = {
+		7B97E2152DF0C80E00BE8C32 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 7B5CF5FA2DEF3F9900600EDB /* IsOlderThan */;
-			targetProxy = 7B5CF6372DF03F3100600EDB /* PBXContainerItemProxy */;
+			target = 7B97E2072DF0C5C400BE8C32 /* IsOlderThanLib */;
+			targetProxy = 7B97E2142DF0C80E00BE8C32 /* PBXContainerItemProxy */;
+		};
+		7B97E2172DF0C81D00BE8C32 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7B97E2072DF0C5C400BE8C32 /* IsOlderThanLib */;
+			targetProxy = 7B97E2162DF0C81D00BE8C32 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -310,10 +396,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 2;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "TESTING=1";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -372,6 +455,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "TESTING=1";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -394,6 +478,8 @@
 				DEVELOPMENT_TEAM = 3N9T36UNVD;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				HEADER_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)/include";
+				LIBRARY_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -405,6 +491,8 @@
 				DEVELOPMENT_TEAM = 3N9T36UNVD;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = c99;
+				HEADER_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)/include";
+				LIBRARY_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -416,7 +504,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3N9T36UNVD;
 				GENERATE_INFOPLIST_FILE = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/IsOlderThan";
+				HEADER_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)/include";
 				LIBRARY_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)";
 				MARKETING_VERSION = 1.0;
 				OTHER_CFLAGS = "-DTESTING";
@@ -433,13 +521,38 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3N9T36UNVD;
 				GENERATE_INFOPLIST_FILE = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/IsOlderThan";
+				HEADER_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)/include";
 				LIBRARY_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)";
 				MARKETING_VERSION = 1.0;
 				OTHER_CFLAGS = "-DTESTING";
 				PRODUCT_BUNDLE_IDENTIFIER = "net.kropfberger.IsOlderThan-Unit-Test-Bundle";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+			};
+			name = Release;
+		};
+		7B97E20A2DF0C5C400BE8C32 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3N9T36UNVD;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		7B97E20B2DF0C5C400BE8C32 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 3N9T36UNVD;
+				EXECUTABLE_PREFIX = lib;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
@@ -469,6 +582,15 @@
 			buildConfigurations = (
 				7B5CF6352DF03DC600600EDB /* Debug */,
 				7B5CF6362DF03DC600600EDB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7B97E2092DF0C5C400BE8C32 /* Build configuration list for PBXNativeTarget "IsOlderThanLib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7B97E20A2DF0C5C400BE8C32 /* Debug */,
+				7B97E20B2DF0C5C400BE8C32 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

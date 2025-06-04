@@ -15,8 +15,8 @@
 #include <stdlib.h>
 #include <time.h>
 
-// Include the main source file for testing
-#include "../isOlderThan/isOlderThan.c"
+// Include the header file instead of the implementation
+#include "isOlderThan.h"
 
 @interface CalendarArithmeticTests : XCTestCase
 @end
@@ -387,6 +387,48 @@
     XCTAssertEqual(result_tm->tm_year, 2000 - 1900, @"Century boundary should be handled correctly");
     XCTAssertEqual(result_tm->tm_mon, 11, @"Month should remain December");
     XCTAssertEqual(result_tm->tm_mday, 31, @"Day should remain 31");
+}
+
+- (void)testNegativeMonthHandling {
+    // Test subtracting months that go across year boundaries
+    
+    // March 15, 2023 - 6 months = September 15, 2022
+    struct tm base_tm = {0};
+    base_tm.tm_year = 2023 - 1900;
+    base_tm.tm_mon = 2; // March
+    base_tm.tm_mday = 15;
+    time_t base_time = mktime(&base_tm);
+    
+    time_t result = add_months_to_time(base_time, -6);
+    struct tm *result_tm = localtime(&result);
+    
+    XCTAssertEqual(result_tm->tm_year, 2022 - 1900, @"Year should be 2022");
+    XCTAssertEqual(result_tm->tm_mon, 8, @"Month should be September (8)");
+    XCTAssertEqual(result_tm->tm_mday, 15, @"Day should remain 15");
+}
+
+- (void)testLargeTimeValues {
+    // Test with large time values to ensure no overflow
+    
+    struct tm base_tm = {0};
+    base_tm.tm_year = 2023 - 1900;
+    base_tm.tm_mon = 5; // June
+    base_tm.tm_mday = 15;
+    time_t base_time = mktime(&base_tm);
+    
+    // Add 100 years
+    time_t result = add_years_to_time(base_time, 100);
+    struct tm *result_tm = localtime(&result);
+    
+    XCTAssertEqual(result_tm->tm_year, 2123 - 1900, @"Should handle large year values");
+    XCTAssertEqual(result_tm->tm_mon, 5, @"Month should remain June");
+    XCTAssertEqual(result_tm->tm_mday, 15, @"Day should remain 15");
+    
+    // Add 1000 months (83+ years)
+    time_t result2 = add_months_to_time(base_time, 1000);
+    struct tm *result2_tm = localtime(&result2);
+    
+    XCTAssertGreaterThan(result2_tm->tm_year, 2100 - 1900, @"Should handle large month values");
 }
 
 @end

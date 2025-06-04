@@ -1,5 +1,5 @@
 //
-//  main.c
+//  main.c (formerly isOlderThan.c)
 //  IsOlderThan
 //
 //  Created by Christian Kropfberger on 03.06.25.
@@ -33,52 +33,15 @@
     #define PATH_SEPARATOR '/'
 #endif
 
-/* Constants and Defaults */
-#define DEFAULT_MONTHS 6
-#define MAX_MONTHS_WITH_YEARS 11
-#define SECONDS_PER_DAY 86400
-#define DAYS_PER_WEEK 7
-
-/* Error Codes */
-#define SUCCESS 0
-#define ERROR_INVALID_ARGS 1
-#define ERROR_FILE_NOT_FOUND 2
-#define ERROR_FILE_ACCESS 3
-#define ERROR_INVALID_COMBINATION 4
-#define ERROR_INVALID_VALUE 5
-
-/* Structure to hold parsed command line arguments */
-typedef struct {
-    char *filepath;
-    int days;
-    int weeks;
-    int months;
-    int years;
-    int exact_mode;
-    int has_days;
-    int has_weeks;
-    int has_months;
-    int has_years;
-} arguments_t;
-
-/* Function Prototypes */
-static void print_usage(const char *program_name);
-static int parse_arguments(int argc, char *argv[], arguments_t *args);
-static int validate_arguments(const arguments_t *args);
-static time_t get_file_modification_time(const char *filepath);
-static time_t calculate_reference_time(const arguments_t *args);
-static int is_leap_year(int year);
-static int get_days_in_month(int month, int year);
-static time_t add_months_to_time(time_t base_time, int months);
-static time_t add_years_to_time(time_t base_time, int years);
-static const char *get_error_message(int error_code);
+// Include our header file
+#include "isOlderThan.h"
 
 /**
  * Print program usage information
  *
  * @param program_name Name of the executable
  */
-static void print_usage(const char *program_name) {
+void print_usage(const char *program_name) {
     printf("Usage: %s <filepath> [options]\n\n", program_name);
     printf("Checks if a file is older than specified time period.\n");
     printf("Default: 6 months if no time specification provided.\n\n");
@@ -117,7 +80,7 @@ static void print_usage(const char *program_name) {
  * @param args Pointer to arguments structure to fill
  * @return Error code (SUCCESS or error)
  */
-static int parse_arguments(int argc, char *argv[], arguments_t *args) {
+int parse_arguments(int argc, char *argv[], arguments_t *args) {
     /* Initialize structure */
     memset(args, 0, sizeof(arguments_t));
     
@@ -196,7 +159,7 @@ static int parse_arguments(int argc, char *argv[], arguments_t *args) {
  * @param args Parsed arguments structure
  * @return Error code (SUCCESS or error)
  */
-static int validate_arguments(const arguments_t *args) {
+int validate_arguments(const arguments_t *args) {
     /* Check mutual exclusivity rules */
     if (args->has_days && (args->has_weeks || args->has_months || args->has_years)) {
         fprintf(stderr, "Error: -days excludes all other time parameters\n");
@@ -224,7 +187,7 @@ static int validate_arguments(const arguments_t *args) {
  * @param filepath Path to the file
  * @return File modification time as time_t, or -1 on error
  */
-static time_t get_file_modification_time(const char *filepath) {
+time_t get_file_modification_time(const char *filepath) {
     struct stat file_stat;
     
     if (stat(filepath, &file_stat) != 0) {
@@ -246,7 +209,7 @@ static time_t get_file_modification_time(const char *filepath) {
  * @param year Year to check
  * @return 1 if leap year, 0 otherwise
  */
-static int is_leap_year(int year) {
+int is_leap_year(int year) {
     return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
 }
 
@@ -258,7 +221,7 @@ static int is_leap_year(int year) {
  * @param year Year
  * @return Number of days in the month
  */
-static int get_days_in_month(int month, int year) {
+int get_days_in_month(int month, int year) {
     static const int days_per_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     
     if (month < 1 || month > 12) return 0;
@@ -278,7 +241,7 @@ static int get_days_in_month(int month, int year) {
  * @param months Number of months to add
  * @return New time_t value
  */
-static time_t add_months_to_time(time_t base_time, int months) {
+time_t add_months_to_time(time_t base_time, int months) {
     struct tm *tm_struct = localtime(&base_time);
     if (!tm_struct) return base_time;
     
@@ -292,6 +255,12 @@ static time_t add_months_to_time(time_t base_time, int months) {
     while (new_tm.tm_mon >= 12) {
         new_tm.tm_year++;
         new_tm.tm_mon -= 12;
+    }
+    
+    /* Normalize negative months */
+    while (new_tm.tm_mon < 0) {
+        new_tm.tm_year--;
+        new_tm.tm_mon += 12;
     }
     
     /* Handle day overflow for shorter months */
@@ -311,7 +280,7 @@ static time_t add_months_to_time(time_t base_time, int months) {
  * @param years Number of years to add
  * @return New time_t value
  */
-static time_t add_years_to_time(time_t base_time, int years) {
+time_t add_years_to_time(time_t base_time, int years) {
     struct tm *tm_struct = localtime(&base_time);
     if (!tm_struct) return base_time;
     
@@ -332,7 +301,7 @@ static time_t add_years_to_time(time_t base_time, int years) {
  * @param args Parsed arguments
  * @return Reference time for comparison
  */
-static time_t calculate_reference_time(const arguments_t *args) {
+time_t calculate_reference_time(const arguments_t *args) {
     time_t current_time;
     time(&current_time);
     
@@ -383,7 +352,7 @@ static time_t calculate_reference_time(const arguments_t *args) {
  * @param error_code Error code
  * @return Error message string
  */
-static const char *get_error_message(int error_code) {
+const char *get_error_message(int error_code) {
     switch (error_code) {
         case SUCCESS: return "Success";
         case ERROR_INVALID_ARGS: return "Invalid arguments";
@@ -397,12 +366,17 @@ static const char *get_error_message(int error_code) {
 
 /**
  * Main program entry point
+ * When testing, this function can be called as isOlderThan_main
  *
  * @param argc Argument count
  * @param argv Argument vector
  * @return Exit code
  */
+#ifdef TESTING
+int isOlderThan_main(int argc, char *argv[]) {
+#else
 int main(int argc, char *argv[]) {
+#endif
     arguments_t args;
     int result;
     
@@ -453,3 +427,10 @@ int main(int argc, char *argv[]) {
         return ERROR_INVALID_ARGS;  /* Using as "not older" indicator */
     }
 }
+
+#ifdef TESTING
+/* Provide a main function for normal compilation */
+int main(int argc, char *argv[]) {
+    return isOlderThan_main(argc, argv);
+}
+#endif

@@ -15,7 +15,7 @@
 #include <time.h>
 
 // Include the main source file for testing
-#include "../isOlderThan/isOlderThan.c"
+#include "../isOlderThan/isOlderThan.h"
 
 @interface IntegrationTests : XCTestCase
 @property (nonatomic, strong) NSString *testFilesDirectory;

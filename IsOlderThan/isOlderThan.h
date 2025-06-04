@@ -50,22 +50,29 @@ typedef struct {
 
 /* Function Prototypes */
 
-/* Main program functions */
+/* Main program functions - exposed for testing */
 void print_usage(const char *program_name);
 int parse_arguments(int argc, char *argv[], arguments_t *args);
 int validate_arguments(const arguments_t *args);
 
-/* File operations */
+/* File operations - exposed for testing */
 time_t get_file_modification_time(const char *filepath);
 
-/* Time calculation functions */
+/* Time calculation functions - exposed for testing */
 time_t calculate_reference_time(const arguments_t *args);
 int is_leap_year(int year);
 int get_days_in_month(int month, int year);
 time_t add_months_to_time(time_t base_time, int months);
 time_t add_years_to_time(time_t base_time, int years);
 
-/* Utility functions */
+/* Utility functions - exposed for testing */
 const char *get_error_message(int error_code);
+
+/* Testing-specific declarations */
+#ifdef TESTING
+/* When TESTING is defined, we declare these as external functions
+   that will be linked from the test object files */
+extern int isOlderThan_main(int argc, char *argv[]);
+#endif
 
 #endif /* ISOLDERTHAN_H */

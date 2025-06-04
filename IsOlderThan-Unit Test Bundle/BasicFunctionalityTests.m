@@ -81,13 +81,19 @@
 - (int)runIsOlderThanWithArguments:(NSArray<NSString *> *)arguments {
     // Convert NSArray to C-style argv
     int argc = (int)arguments.count;
+    
+    // LÖSUNG 1: Verwende const char** statt char** (wenn möglich)
+    const char **argv_const = malloc(argc * sizeof(const char *));
     char **argv = malloc(argc * sizeof(char *));
     
-    // Mit explizitem Cast (unterdrückt Warning):
     for (int i = 0; i < argc; i++) {
         NSString *arg = arguments[i];
-        const char *utf8String = [arg UTF8String];
-        argv[i] = strdup(utf8String);  // strdup macht malloc + strcpy automatisch
+        // Direkte Zuweisung zu const char* - kein Warning
+        argv_const[i] = [arg UTF8String];
+        // Dann kopieren für modifiable version
+        size_t len = strlen(argv_const[i]);
+        argv[i] = malloc(len + 1);
+        strcpy(argv[i], argv_const[i]);
     }
     
     // Capture stdout and stderr for testing
@@ -109,12 +115,14 @@
     
     // Clean up argv
     for (int i = 0; i < argc; i++) {
-        free(argv[i]);  // strdup memory muss mit free() freigegeben werden
+        free(argv[i]);
     }
     free(argv);
+    free(argv_const);
     
     return result;
 }
+
 
 #pragma mark - Argument Parsing Tests
 

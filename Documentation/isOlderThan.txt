@@ -1,0 +1,215 @@
+================================================================================
+                            ISOLDERTHAN - HELP DOCUMENTATION
+                             File Age Verification Tool
+                                   Version 1.0
+                                  June 2025
+================================================================================
+
+NAME
+    isOlderThan.exe - Check if a file is older than specified time period
+
+SYNOPSIS
+    isOlderThan.exe <filepath> [options]
+
+DESCRIPTION
+    isOlderThan checks whether a file is older than a specified time period.
+    The program compares the file's modification time against a reference time
+    calculated from the current time minus the specified age threshold.
+
+    By default, if no time specification is provided, the program checks if
+    the file is older than 6 months.
+
+    The reference time calculation can use either the exact current time
+    (with -exact) or the end of the previous day (default behavior).
+
+REQUIRED PARAMETER
+    <filepath>      Path to the file to check
+                    Can be absolute (C:\path\to\file.txt) or relative (file.txt)
+                    Supports both forward slashes (/) and backslashes (\)
+
+OPTIONAL TIME PARAMETERS
+    -days <count>   Number of days
+                    Excludes all other time parameters (-weeks, -months, -years)
+                    Example: -days 30
+
+    -weeks <count>  Number of weeks
+                    Excludes all other time parameters (-days, -months, -years)
+                    Example: -weeks 4
+
+    -months <count> Number of months
+                    Can be combined with -years (maximum 11 when combined)
+                    Example: -months 6
+
+    -years <count>  Number of years
+                    Can be combined with -months
+                    Example: -years 2
+
+TIME REFERENCE MODE
+    -exact          Use exact current program execution time as reference
+                    Default: uses end of previous day as reference
+
+PARAMETER RULES
+    • -days excludes all other time parameters
+    • -weeks excludes all other time parameters
+    • -months can only be combined with -years
+    • When -months and -years are combined, months must be ≤ 11
+    • Default behavior: end of previous day reference time
+    • -exact mode: current program execution time reference
+
+TIME CALCULATION
+    The program performs accurate calendar arithmetic, properly handling:
+    • Leap years according to Gregorian calendar rules
+    • Variable month lengths (28-31 days)
+    • February 29 boundary conditions in non-leap years
+    • Year and month overflow normalization
+
+EXIT CODES
+    0   File is older than specified period (success)
+    1   Invalid arguments or file is not older than specified period
+    2   File not found
+    3   File access error (permissions, I/O error)
+    4   Invalid parameter combination
+    5   Invalid parameter value (negative numbers, etc.)
+
+EXAMPLES
+
+    Basic Usage:
+    ------------
+    Check if file is older than default 6 months:
+        isOlderThan.exe C:\temp\myfile.txt
+
+    Check if file is older than 30 days:
+        isOlderThan.exe C:\Documents\report.doc -days 30
+
+    Check if file is older than 2 weeks:
+        isOlderThan.exe .\backup.zip -weeks 2
+
+    Check if file is older than 1 year and 6 months:
+        isOlderThan.exe "C:\Program Files\app\config.ini" -years 1 -months 6
+
+    Check with exact current time reference:
+        isOlderThan.exe C:\logs\app.log -months 3 -exact
+
+    Batch Script Usage:
+    ------------------
+    @echo off
+    isOlderThan.exe "C:\temp\cache.dat" -days 7
+    if %ERRORLEVEL% == 0 (
+        del "C:\temp\cache.dat"
+        echo Removed old cache file
+    ) else (
+        echo Cache file is still current
+    )
+
+    PowerShell Usage:
+    ----------------
+    if (& .\isOlderThan.exe "C:\logs\debug.log" -days 30) {
+        Remove-Item "C:\logs\debug.log"
+        Write-Host "Removed old debug log"
+    }
+
+TECHNICAL DETAILS
+
+    Calendar Arithmetic:
+    -------------------
+    The program implements proper calendar arithmetic:
+    • Leap year calculation: (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)
+    • Month addition handles varying month lengths correctly
+    • February 29 dates are adjusted to February 28 in non-leap years
+    • All calculations use local system timezone
+
+    File Time Retrieval:
+    -------------------
+    File modification times are retrieved using Windows-compatible stat() calls,
+    ensuring proper handling of NTFS timestamps and timezone information.
+
+    Path Handling:
+    -------------
+    • Supports both Windows backslash (\) and Unix forward slash (/) separators
+    • Handles long file paths and Unicode filenames
+    • Properly processes quoted paths with spaces
+
+INSTALLATION
+
+    Manual Installation:
+    -------------------
+    1. Copy isOlderThan.exe to a directory in your PATH
+       (e.g., C:\Windows\System32 or C:\Program Files\isOlderThan\)
+    
+    2. Copy this help file to the same directory
+
+    Using Make (with MinGW):
+    -----------------------
+    make install-windows
+
+ENVIRONMENT
+    The program respects Windows timezone settings and regional configurations
+    for accurate time calculations.
+
+TROUBLESHOOTING
+
+    Common Issues:
+    -------------
+    • "File not found" - Check file path and ensure file exists
+    • "File access error" - Verify read permissions on the file
+    • "Invalid parameter combination" - Review parameter rules above
+    • "Invalid parameter value" - Ensure all numeric values are positive
+
+    Path Issues:
+    -----------
+    • Use quotes around paths containing spaces: "C:\Program Files\file.txt"
+    • Both forward slashes and backslashes work: C:/temp/file.txt
+    • Relative paths work from current directory: .\subfolder\file.txt
+
+    Permission Issues:
+    -----------------
+    • Run Command Prompt as Administrator if accessing system files
+    • Ensure the file is not locked by another application
+    • Check NTFS permissions on the target file
+
+ERROR MESSAGES
+    Error: File path is required
+        → Provide a file path as the first argument
+    
+    Error: -days requires a value
+        → Specify a number after -days parameter
+    
+    Error: Days must be positive
+        → Use positive numbers only (> 0)
+    
+    Error: -days excludes all other time parameters
+        → Don't combine -days with -weeks, -months, or -years
+    
+    Error: When combined with -years, -months can have maximum value of 11
+        → When using both -years and -months, months must be ≤ 11
+
+COMPATIBILITY
+    • Windows 7 and later
+    • Windows Server 2008 R2 and later
+    • Both 32-bit and 64-bit architectures
+    • Compatible with Command Prompt, PowerShell, and batch scripts
+
+FILES
+    isOlderThan.exe     - Main executable
+    isOlderThan.txt     - This help file (recommended location: same directory)
+
+AUTHOR
+    Written as a cross-platform file age verification tool following C99 standards.
+    Compiled for Windows using MinGW-w64.
+
+COPYRIGHT
+    This program is provided as-is for educational and practical use.
+
+RELATED TOOLS
+    forfiles   - Windows built-in tool for file operations based on date
+    dir        - List directory contents with date information
+    attrib     - Display/modify file attributes
+    where      - Locate files in PATH
+
+FOR MORE INFORMATION
+    Visit the project repository for source code, additional documentation,
+    and updates.
+
+================================================================================
+                              END OF HELP FILE
+================================================================================

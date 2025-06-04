@@ -1,0 +1,174 @@
+.TH ISOLDERTHAN 1 "June 2025" "Version 1.0" "File Age Verification Tool"
+.SH NAME
+isOlderThan \- check if a file is older than specified time period
+.SH SYNOPSIS
+.B isOlderThan
+.I filepath
+.RI [ options ]
+.SH DESCRIPTION
+.B isOlderThan
+checks whether a file is older than a specified time period. The program compares the file's modification time against a reference time calculated from the current time minus the specified age threshold.
+
+By default, if no time specification is provided, the program checks if the file is older than 6 months.
+
+The reference time calculation can use either the exact current time (with \fB\-exact\fR) or the end of the previous day (default behavior), providing flexibility for different use cases such as daily maintenance scripts.
+.SH OPTIONS
+.SS Required Parameter
+.TP
+.I filepath
+Path to the file to check. Can be absolute or relative path.
+.SS Optional Time Parameters
+.TP
+.BI \-days " count"
+Number of days. This parameter excludes all other time parameters (\fB\-weeks\fR, \fB\-months\fR, \fB\-years\fR).
+.TP
+.BI \-weeks " count"
+Number of weeks. This parameter excludes all other time parameters (\fB\-days\fR, \fB\-months\fR, \fB\-years\fR).
+.TP
+.BI \-months " count"
+Number of months. Can be combined with \fB\-years\fR, but when combined, the maximum value is 11.
+.TP
+.BI \-years " count"
+Number of years. Can be combined with \fB\-months\fR.
+.SS Time Reference Mode
+.TP
+.B \-exact
+Use exact current program execution time as reference instead of end of previous day (default).
+.SH PARAMETER RULES
+.TP
+\(bu
+\fB\-days\fR excludes all other time parameters
+.TP
+\(bu
+\fB\-weeks\fR excludes all other time parameters
+.TP
+\(bu
+\fB\-months\fR can only be combined with \fB\-years\fR
+.TP
+\(bu
+When \fB\-months\fR and \fB\-years\fR are combined, months must be ≤ 11
+.TP
+\(bu
+Default behavior: end of previous day reference time
+.TP
+\(bu
+\fB\-exact\fR mode: current program execution time reference
+.SH TIME CALCULATION
+The program performs accurate calendar arithmetic, properly handling:
+.TP
+\(bu
+Leap years according to Gregorian calendar rules
+.TP
+\(bu
+Variable month lengths (28-31 days)
+.TP
+\(bu
+February 29 boundary conditions in non-leap years
+.TP
+\(bu
+Year and month overflow normalization
+.SH EXIT STATUS
+.TP
+.B 0
+File is older than specified period (success)
+.TP
+.B 1
+Invalid arguments or file is not older than specified period
+.TP
+.B 2
+File not found
+.TP
+.B 3
+File access error (permissions, I/O error)
+.TP
+.B 4
+Invalid parameter combination
+.TP
+.B 5
+Invalid parameter value (negative numbers, etc.)
+.SH EXAMPLES
+.TP
+Check if file is older than default 6 months:
+.B isOlderThan /path/to/file
+.TP
+Check if file is older than 30 days:
+.B isOlderThan /path/to/file \-days 30
+.TP
+Check if file is older than 2 weeks:
+.B isOlderThan /path/to/file \-weeks 2
+.TP
+Check if file is older than 1 year and 6 months:
+.B isOlderThan /path/to/file \-years 1 \-months 6
+.TP
+Check with exact current time reference:
+.B isOlderThan /path/to/file \-months 3 \-exact
+.TP
+Use in shell script for cleanup:
+.nf
+.RS
+if isOlderThan "$HOME/temp/cache.dat" \-days 7; then
+    rm "$HOME/temp/cache.dat"
+    echo "Removed old cache file"
+fi
+.RE
+.fi
+.SH TECHNICAL DETAILS
+.SS Calendar Arithmetic
+The program implements proper calendar arithmetic:
+.TP
+\(bu
+Leap year calculation: (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)
+.TP
+\(bu
+Month addition handles varying month lengths correctly
+.TP
+\(bu
+February 29 dates are adjusted to February 28 in non-leap years
+.TP
+\(bu
+All calculations use local system timezone
+.SS File Time Retrieval
+File modification times are retrieved using the POSIX \fBstat()\fR system call, ensuring compatibility across Unix-like systems while maintaining nanosecond precision where available.
+.SH PLATFORM COMPATIBILITY
+.TP
+.B Unix/Linux
+Native support using POSIX APIs
+.TP
+.B macOS
+Full compatibility with Darwin-specific extensions
+.TP
+.B Windows
+Supported via MinGW compiler with Windows-specific adaptations
+.SH FILES
+.TP
+.B /usr/local/bin/isOlderThan
+Default installation location for the executable
+.TP
+.B /usr/local/share/man/man1/isOlderThan.1
+This manual page
+.SH ENVIRONMENT
+The program respects the system's timezone settings and locale for time calculations.
+.SH DIAGNOSTICS
+Error messages are written to standard error (stderr) and include:
+.TP
+\(bu
+File access problems with specific error descriptions
+.TP
+\(bu
+Parameter validation errors with suggested corrections
+.TP
+\(bu
+Calendar arithmetic edge cases
+.SH BUGS
+Report bugs to the project maintainer. Include platform information, command line used, and expected vs. actual behavior.
+.SH AUTHOR
+Written as a cross-platform file age verification tool following C99 standards.
+.SH COPYRIGHT
+This program is provided as-is for educational and practical use.
+.SH SEE ALSO
+.BR find (1),
+.BR stat (1),
+.BR touch (1),
+.BR ls (1)
+
+For additional documentation and source code, visit the project repository.

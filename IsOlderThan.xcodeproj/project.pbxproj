@@ -48,11 +48,21 @@
 			);
 			target = 7B5CF5FA2DEF3F9900600EDB /* IsOlderThan */;
 		};
+		7B5CF64C2DF06FD300600EDB /* Exceptions for "IsOlderThan" folder in "IsOlderThan" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				isOlderThan.c,
+			);
+			target = 7B5CF5FA2DEF3F9900600EDB /* IsOlderThan */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		7B5CF5FD2DEF3F9900600EDB /* IsOlderThan */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				7B5CF64C2DF06FD300600EDB /* Exceptions for "IsOlderThan" folder in "IsOlderThan" target */,
+			);
 			path = IsOlderThan;
 			sourceTree = "<group>";
 		};
@@ -67,11 +77,6 @@
 				7B5CF62B2DF03C7900600EDB /* Exceptions for "Build System" folder in "IsOlderThan" target */,
 			);
 			path = "Build System";
-			sourceTree = "<group>";
-		};
-		7B5CF6212DF0375500600EDB /* IsOlderThan-Tests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "IsOlderThan-Tests";
 			sourceTree = "<group>";
 		};
 		7B5CF6312DF03DC600600EDB /* IsOlderThan-Unit Test Bundle */ = {
@@ -105,7 +110,6 @@
 			children = (
 				7B5CF6072DF0289200600EDB /* Build System */,
 				7B5CF5FD2DEF3F9900600EDB /* IsOlderThan */,
-				7B5CF6212DF0375500600EDB /* IsOlderThan-Tests */,
 				7B5CF6312DF03DC600600EDB /* IsOlderThan-Unit Test Bundle */,
 				7B5CF5FC2DEF3F9900600EDB /* Products */,
 				7B5CF6062DF0288500600EDB /* Documentation */,

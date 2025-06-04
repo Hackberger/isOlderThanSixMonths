@@ -48,16 +48,6 @@
 			);
 			target = 7B5CF5FA2DEF3F9900600EDB /* IsOlderThan */;
 		};
-		7B5CF6402DF0402A00600EDB /* Exceptions for "IsOlderThan-Tests" folder in "IsOlderThan-Unit Test Bundle" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				BasicFunctionalityTests.m,
-				CalendarArithmeticTests.m,
-				EdgeCasesTests.m,
-				IntegrationTests.m,
-			);
-			target = 7B5CF62F2DF03DC600600EDB /* IsOlderThan-Unit Test Bundle */;
-		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -81,9 +71,6 @@
 		};
 		7B5CF6212DF0375500600EDB /* IsOlderThan-Tests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				7B5CF6402DF0402A00600EDB /* Exceptions for "IsOlderThan-Tests" folder in "IsOlderThan-Unit Test Bundle" target */,
-			);
 			path = "IsOlderThan-Tests";
 			sourceTree = "<group>";
 		};

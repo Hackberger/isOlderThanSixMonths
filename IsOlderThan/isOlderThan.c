@@ -115,7 +115,7 @@ static void print_usage(const char *program_name) {
  * @param argc Argument count
  * @param argv Argument vector
  * @param args Pointer to arguments structure to fill
- * @return: Error code (SUCCESS or error)
+ * @return Error code (SUCCESS or error)
  */
 static int parse_arguments(int argc, char *argv[], arguments_t *args) {
     /* Initialize structure */
@@ -194,7 +194,7 @@ static int parse_arguments(int argc, char *argv[], arguments_t *args) {
  * Validate argument combinations according to specification
  *
  * @param args Parsed arguments structure
- * @return: Error code (SUCCESS or error)
+ * @return Error code (SUCCESS or error)
  */
 static int validate_arguments(const arguments_t *args) {
     /* Check mutual exclusivity rules */
@@ -222,7 +222,7 @@ static int validate_arguments(const arguments_t *args) {
  * Get file modification time using platform-appropriate method
  *
  * @param filepath Path to the file
- * @return: File modification time as time_t, or -1 on error
+ * @return File modification time as time_t, or -1 on error
  */
 static time_t get_file_modification_time(const char *filepath) {
     struct stat file_stat;
@@ -244,7 +244,7 @@ static time_t get_file_modification_time(const char *filepath) {
  * Implements Gregorian calendar leap year rules
  *
  * @param year Year to check
- * @return: 1 if leap year, 0 otherwise
+ * @return 1 if leap year, 0 otherwise
  */
 static int is_leap_year(int year) {
     return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
@@ -256,7 +256,7 @@ static int is_leap_year(int year) {
  *
  * @param month Month (1-12)
  * @param year Year
- * @return: Number of days in the month
+ * @return Number of days in the month
  */
 static int get_days_in_month(int month, int year) {
     static const int days_per_month[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
@@ -276,7 +276,7 @@ static int get_days_in_month(int month, int year) {
  *
  * @param base_time Starting time
  * @param months Number of months to add
- * @return: New time_t value
+ * @return New time_t value
  */
 static time_t add_months_to_time(time_t base_time, int months) {
     struct tm *tm_struct = localtime(&base_time);
@@ -309,7 +309,7 @@ static time_t add_months_to_time(time_t base_time, int months) {
  *
  * @param base_time Starting time
  * @param years Number of years to add
- * @return: New time_t value
+ * @return New time_t value
  */
 static time_t add_years_to_time(time_t base_time, int years) {
     struct tm *tm_struct = localtime(&base_time);
@@ -330,7 +330,7 @@ static time_t add_years_to_time(time_t base_time, int years) {
  * Calculate reference time based on arguments and exact mode
  *
  * @param args Parsed arguments
- * @return: Reference time for comparison
+ * @return Reference time for comparison
  */
 static time_t calculate_reference_time(const arguments_t *args) {
     time_t current_time;
@@ -381,7 +381,7 @@ static time_t calculate_reference_time(const arguments_t *args) {
  * Get human-readable error message for error code
  *
  * @param error_code Error code
- * @return: Error message string
+ * @return Error message string
  */
 static const char *get_error_message(int error_code) {
     switch (error_code) {
@@ -400,7 +400,7 @@ static const char *get_error_message(int error_code) {
  *
  * @param argc Argument count
  * @param argv Argument vector
- * @return: Exit code
+ * @return Exit code
  */
 int main(int argc, char *argv[]) {
     arguments_t args;

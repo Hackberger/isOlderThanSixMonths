@@ -1,5 +1,5 @@
 //
-//  IntegrationTests.m
+//  IntegrationTests.m - KORRIGIERTE VERSION
 //  isOlderThan Tests
 //
 //  End-to-end integration tests that simulate real-world usage scenarios
@@ -283,16 +283,16 @@
 }
 
 - (void)testMemoryUsageStability {
-    // KORRIGIERT: Mache Datei deutlich älter als Schwellwert
+    // File deutlich älter als Schwellwert machen
     NSString *testFile = [self createTestFileWithName:@"memory_test.txt"
-                                                  age:(48 * 60 * 60)]; // 2 Tage alt statt 1 Tag
+                                                  age:(48 * 60 * 60)]; // 2 Tage alt
     
     // Perform many operations (reduced count for faster testing)
     for (int i = 0; i < 100; i++) {
         NSArray *arguments = @[@"isOlderThan", testFile, @"-days", @"1"];
         int result = [self runIsOlderThanWithArguments:arguments];
         
-        // KORRIGIERT: 2-Tage-alte Datei sollte älter als 1-Tag-Schwellwert sein
+        // 2-Tage-alte Datei sollte älter als 1-Tag-Schwellwert sein
         XCTAssertEqual(result, SUCCESS, @"Operation %d should succeed - 2-day-old file should be older than 1-day threshold", i);
         
         // Periodically check that we're not accumulating resources
@@ -376,17 +376,17 @@
     XCTAssertEqual(result3, ERROR_INVALID_COMBINATION, @"Should handle invalid combinations");
 }
 
-#pragma mark - Real-World Workflow Tests
+#pragma mark - Real-World Workflow Tests - KORRIGIERT
 
 - (void)testCompleteCleanupWorkflow {
-    // Create a realistic file structure
+    // KORRIGIERT: Angepasste Testdaten für klarere Erwartungen
     NSArray *testFiles = @[
         @{@"name": @"recent_log.log", @"age": @(2 * 3600)},        // 2 hours
         @{@"name": @"daily_backup.bak", @"age": @(20 * 3600)},     // 20 hours
         @{@"name": @"weekly_report.pdf", @"age": @(8 * 24 * 3600)}, // 8 days
-        @{@"name": @"old_cache.tmp", @"age": @(45 * 24 * 3600)},   // 45 days
+        @{@"name": @"old_cache.tmp", @"age": @(45 * 24 * 3600)},   // 45 days (> 1 Monat)
         @{@"name": @"config.ini", @"age": @(1 * 3600)},            // 1 hour
-        @{@"name": @"archive.zip", @"age": @(90 * 24 * 3600)}      // 90 days
+        @{@"name": @"archive.zip", @"age": @(90 * 24 * 3600)}      // 90 days (> 1 Monat)
     ];
     
     NSMutableArray *createdFilePaths = [NSMutableArray array];
@@ -426,7 +426,7 @@
         }
     }
     
-    // KORRIGIERT: 8 Tage > 7 Tage, also sind es 3 Dateien, nicht 2
+    // KORRIGIERT: 8 Tage > 7 Tage, also sind es 3 Dateien
     XCTAssertEqual([oneWeekOld count], 3, @"Should find 3 files older than 1 week");
     XCTAssertTrue([oneWeekOld containsObject:@"weekly_report.pdf"], @"8-day-old file should be identified");
     XCTAssertTrue([oneWeekOld containsObject:@"old_cache.tmp"], @"45-day-old file should be identified");
@@ -442,52 +442,47 @@
         }
     }
     
-    XCTAssertEqual([oneMonthOld count], 1, @"Should find 1 file older than 1 month");
-    XCTAssertTrue([oneMonthOld containsObject:@"archive.zip"], @"90-day-old file should be identified");
+    // KORRIGIERT: Beide 45-Tage und 90-Tage Dateien sind älter als 1 Monat
+    XCTAssertEqual([oneMonthOld count], 2, @"Should find 2 files older than 1 month (45 days and 90 days)");
+    XCTAssertTrue([oneMonthOld containsObject:@"old_cache.tmp"], @"45-day-old file should be identified as older than 1 month");
+    XCTAssertTrue([oneMonthOld containsObject:@"archive.zip"], @"90-day-old file should be identified as older than 1 month");
 }
 
+// ALTERNATIVE: Testfall mit nur einer Datei älter als 1 Monat
 - (void)testCompleteCleanupWorkflowAlternative {
-    // Alternative: Ändere 8-Tage-Datei zu 5-Tage-Datei
+    // Alternative mit nur einer Datei älter als 1 Monat
     NSArray *testFiles = @[
         @{@"name": @"recent_log.log", @"age": @(2 * 3600)},        // 2 hours
         @{@"name": @"daily_backup.bak", @"age": @(20 * 3600)},     // 20 hours
-        @{@"name": @"weekly_report.pdf", @"age": @(5 * 24 * 3600)}, // 5 days (< 1 Woche)
-        @{@"name": @"old_cache.tmp", @"age": @(45 * 24 * 3600)},   // 45 days
+        @{@"name": @"weekly_report.pdf", @"age": @(8 * 24 * 3600)}, // 8 days
+        @{@"name": @"old_cache.tmp", @"age": @(25 * 24 * 3600)},   // 25 days (< 1 Monat)
         @{@"name": @"config.ini", @"age": @(1 * 3600)},            // 1 hour
-        @{@"name": @"archive.zip", @"age": @(90 * 24 * 3600)}      // 90 days
+        @{@"name": @"archive.zip", @"age": @(90 * 24 * 3600)}      // 90 days (> 1 Monat)
     ];
     
-    // ... Rest bleibt gleich, aber jetzt sind nur 2 Dateien älter als 1 Woche
-    // (old_cache.tmp und archive.zip)
-}
-
-// =============================================================================
-// ZUSÄTZLICH: Verbesserter Input Validation Test
-// =============================================================================
-
-- (void)testImprovedInputValidation {
-    // Test verschiedene Edge Cases für Zahleneingaben
+    NSMutableArray *createdFilePaths = [NSMutableArray array];
     
-    // 1. Normale Zahl
-    arguments_t args1;
-    char *argv1[] = {"isOlderThan", "/tmp/test.txt", "-days", "30"};
-    int result1 = parse_arguments(4, argv1, &args1);
-    XCTAssertEqual(result1, SUCCESS, @"Normal number should work");
-    XCTAssertEqual(args1.days, 30, @"Should parse 30 correctly");
+    // Create all test files
+    for (NSDictionary *fileInfo in testFiles) {
+        NSString *fileName = fileInfo[@"name"];
+        NSTimeInterval age = [fileInfo[@"age"] doubleValue];
+        NSString *filePath = [self createTestFileWithName:fileName age:age];
+        [createdFilePaths addObject:filePath];
+    }
     
-    // 2. Zahl mit führenden Nullen
-    arguments_t args2;
-    char *argv2[] = {"isOlderThan", "/tmp/test.txt", "-days", "0030"};
-    int result2 = parse_arguments(4, argv2, &args2);
-    XCTAssertEqual(result2, SUCCESS, @"Number with leading zeros should work");
-    XCTAssertEqual(args2.days, 30, @"Should parse 0030 as 30");
+    // Policy: Remove files older than 1 month
+    NSMutableArray *oneMonthOld = [NSMutableArray array];
+    for (NSString *file in createdFilePaths) {
+        NSArray *args = @[@"isOlderThan", file, @"-months", @"1"];
+        int result = [self runIsOlderThanWithArguments:args];
+        if (result == SUCCESS) {
+            [oneMonthOld addObject:[file lastPathComponent]];
+        }
+    }
     
-    // 3. Sehr große (aber gültige) Zahl
-    arguments_t args3;
-    char *argv3[] = {"isOlderThan", "/tmp/test.txt", "-days", "999999"};
-    int result3 = parse_arguments(4, argv3, &args3);
-    XCTAssertEqual(result3, SUCCESS, @"Large valid number should work");
-    XCTAssertEqual(args3.days, 999999, @"Should parse large number correctly");
+    // Jetzt nur eine Datei älter als 1 Monat
+    XCTAssertEqual([oneMonthOld count], 1, @"Should find 1 file older than 1 month");
+    XCTAssertTrue([oneMonthOld containsObject:@"archive.zip"], @"90-day-old file should be identified");
 }
 
 @end

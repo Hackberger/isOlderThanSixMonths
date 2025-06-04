@@ -6,6 +6,20 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		7B5CF63E2DF0401B00600EDB /* IsOlderThan in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B5CF5FB2DEF3F9900600EDB /* IsOlderThan */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		7B5CF6372DF03F3100600EDB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7B5CF5F32DEF3F9900600EDB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7B5CF5FA2DEF3F9900600EDB;
+			remoteInfo = IsOlderThan;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		7B5CF5F92DEF3F9900600EDB /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -20,7 +34,31 @@
 
 /* Begin PBXFileReference section */
 		7B5CF5FB2DEF3F9900600EDB /* IsOlderThan */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = IsOlderThan; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B5CF60F2DF0295400600EDB /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		7B5CF6302DF03DC600600EDB /* IsOlderThan-Unit Test Bundle.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "IsOlderThan-Unit Test Bundle.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7B5CF63A2DF03F6800600EDB /* IsOlderThan.xcscheme */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = IsOlderThan.xcscheme; sourceTree = "<group>"; };
+		7B5CF63B2DF03F6800600EDB /* IsOlderThan-Tests.xcscheme */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "IsOlderThan-Tests.xcscheme"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		7B5CF62B2DF03C7900600EDB /* Exceptions for "Build System" folder in "IsOlderThan" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Makefile,
+			);
+			target = 7B5CF5FA2DEF3F9900600EDB /* IsOlderThan */;
+		};
+		7B5CF6402DF0402A00600EDB /* Exceptions for "IsOlderThan-Tests" folder in "IsOlderThan-Unit Test Bundle" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				BasicFunctionalityTests.m,
+				CalendarArithmeticTests.m,
+				EdgeCasesTests.m,
+				IntegrationTests.m,
+			);
+			target = 7B5CF62F2DF03DC600600EDB /* IsOlderThan-Unit Test Bundle */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		7B5CF5FD2DEF3F9900600EDB /* IsOlderThan */ = {
@@ -35,7 +73,23 @@
 		};
 		7B5CF6072DF0289200600EDB /* Build System */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				7B5CF62B2DF03C7900600EDB /* Exceptions for "Build System" folder in "IsOlderThan" target */,
+			);
 			path = "Build System";
+			sourceTree = "<group>";
+		};
+		7B5CF6212DF0375500600EDB /* IsOlderThan-Tests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				7B5CF6402DF0402A00600EDB /* Exceptions for "IsOlderThan-Tests" folder in "IsOlderThan-Unit Test Bundle" target */,
+			);
+			path = "IsOlderThan-Tests";
+			sourceTree = "<group>";
+		};
+		7B5CF6312DF03DC600600EDB /* IsOlderThan-Unit Test Bundle */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "IsOlderThan-Unit Test Bundle";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -48,6 +102,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7B5CF62D2DF03DC600600EDB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7B5CF63E2DF0401B00600EDB /* IsOlderThan in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -56,8 +118,12 @@
 			children = (
 				7B5CF6072DF0289200600EDB /* Build System */,
 				7B5CF5FD2DEF3F9900600EDB /* IsOlderThan */,
+				7B5CF6212DF0375500600EDB /* IsOlderThan-Tests */,
+				7B5CF6312DF03DC600600EDB /* IsOlderThan-Unit Test Bundle */,
 				7B5CF5FC2DEF3F9900600EDB /* Products */,
 				7B5CF6062DF0288500600EDB /* Documentation */,
+				7B5CF60F2DF0295400600EDB /* README.md */,
+				7B5CF6392DF03F6800600EDB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -65,8 +131,35 @@
 			isa = PBXGroup;
 			children = (
 				7B5CF5FB2DEF3F9900600EDB /* IsOlderThan */,
+				7B5CF6302DF03DC600600EDB /* IsOlderThan-Unit Test Bundle.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		7B5CF6392DF03F6800600EDB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7B5CF63D2DF03F6800600EDB /* xcshareddata */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7B5CF63C2DF03F6800600EDB /* xcschemes */ = {
+			isa = PBXGroup;
+			children = (
+				7B5CF63A2DF03F6800600EDB /* IsOlderThan.xcscheme */,
+				7B5CF63B2DF03F6800600EDB /* IsOlderThan-Tests.xcscheme */,
+			);
+			path = xcschemes;
+			sourceTree = "<group>";
+		};
+		7B5CF63D2DF03F6800600EDB /* xcshareddata */ = {
+			isa = PBXGroup;
+			children = (
+				7B5CF63C2DF03F6800600EDB /* xcschemes */,
+			);
+			name = xcshareddata;
+			path = IsOlderThan.xcodeproj/xcshareddata;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -96,6 +189,29 @@
 			productReference = 7B5CF5FB2DEF3F9900600EDB /* IsOlderThan */;
 			productType = "com.apple.product-type.tool";
 		};
+		7B5CF62F2DF03DC600600EDB /* IsOlderThan-Unit Test Bundle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7B5CF6342DF03DC600600EDB /* Build configuration list for PBXNativeTarget "IsOlderThan-Unit Test Bundle" */;
+			buildPhases = (
+				7B5CF62C2DF03DC600600EDB /* Sources */,
+				7B5CF62D2DF03DC600600EDB /* Frameworks */,
+				7B5CF62E2DF03DC600600EDB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7B5CF6382DF03F3100600EDB /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				7B5CF6312DF03DC600600EDB /* IsOlderThan-Unit Test Bundle */,
+			);
+			name = "IsOlderThan-Unit Test Bundle";
+			packageProductDependencies = (
+			);
+			productName = "IsOlderThan-Unit Test Bundle";
+			productReference = 7B5CF6302DF03DC600600EDB /* IsOlderThan-Unit Test Bundle.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -104,8 +220,12 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastUpgradeCheck = 1640;
+				ORGANIZATIONNAME = "Christian Kropfberger";
 				TargetAttributes = {
 					7B5CF5FA2DEF3F9900600EDB = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					7B5CF62F2DF03DC600600EDB = {
 						CreatedOnToolsVersion = 16.4;
 					};
 				};
@@ -125,9 +245,20 @@
 			projectRoot = "";
 			targets = (
 				7B5CF5FA2DEF3F9900600EDB /* IsOlderThan */,
+				7B5CF62F2DF03DC600600EDB /* IsOlderThan-Unit Test Bundle */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7B5CF62E2DF03DC600600EDB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		7B5CF5F72DEF3F9900600EDB /* Sources */ = {
@@ -137,7 +268,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7B5CF62C2DF03DC600600EDB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7B5CF6382DF03F3100600EDB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7B5CF5FA2DEF3F9900600EDB /* IsOlderThan */;
+			targetProxy = 7B5CF6372DF03F3100600EDB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		7B5CF6002DEF3F9900600EDB /* Debug */ = {
@@ -198,7 +344,9 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = net.kropfberger.IsOlderThan;
 				SDKROOT = macosx;
+				SUPPORTS_TEXT_BASED_API = YES;
 			};
 			name = Debug;
 		};
@@ -253,6 +401,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 15.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = net.kropfberger.IsOlderThan;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -277,6 +426,40 @@
 			};
 			name = Release;
 		};
+		7B5CF6352DF03DC600600EDB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3N9T36UNVD;
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)";
+				LIBRARY_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)";
+				MARKETING_VERSION = 1.0;
+				OTHER_CFLAGS = "-DTESTING";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.kropfberger.IsOlderThan-Unit-Test-Bundle";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+			};
+			name = Debug;
+		};
+		7B5CF6362DF03DC600600EDB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3N9T36UNVD;
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)";
+				LIBRARY_SEARCH_PATHS = "$(BUILT_PRODUCTS_DIR)";
+				MARKETING_VERSION = 1.0;
+				OTHER_CFLAGS = "-DTESTING";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.kropfberger.IsOlderThan-Unit-Test-Bundle";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -294,6 +477,15 @@
 			buildConfigurations = (
 				7B5CF6032DEF3F9900600EDB /* Debug */,
 				7B5CF6042DEF3F9900600EDB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7B5CF6342DF03DC600600EDB /* Build configuration list for PBXNativeTarget "IsOlderThan-Unit Test Bundle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7B5CF6352DF03DC600600EDB /* Debug */,
+				7B5CF6362DF03DC600600EDB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
